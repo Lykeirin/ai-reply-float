@@ -18,10 +18,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.tvHint.text = "云端：novelgrok.nsfs.cn\n\n使用流程：\n" +
-                "1. 点「启动浮窗」并允许「在其他应用上层显示」；\n" +
+                "1. 点「启动浮窗」→ 允许「在其他应用上层显示」；\n" +
                 "2. 切到微信，长按对方消息 → 复制；\n" +
                 "3. 点屏幕左上角浮窗的「粘贴」→「生成候选」；\n" +
-                "4. 点任意一条，自动复制到剪贴板，回微信粘贴发送。"
+                "4. 点任意一条，自动复制到剪贴板，回微信粘贴发送。\n\n" +
+                "⚠️ 如提示「屡次停止运行」，请先到设置里给本应用「悬浮窗」权限。"
 
         binding.btnStart.setOnClickListener { ensurePermissionThenStart() }
         binding.btnSettings.setOnClickListener {

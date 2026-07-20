@@ -58,7 +58,13 @@ class FloatingService : Service() {
     }
 
     private fun showFloating() {
-        val view = LayoutInflater.from(this).inflate(R.layout.floating_window, null)
+        val view = try {
+            LayoutInflater.from(this).inflate(R.layout.floating_window, null)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            stopSelf()
+            return
+        }
         rootView = view
 
         val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -78,8 +84,18 @@ class FloatingService : Service() {
         params.y = 120
         params.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 
-        wm.addView(view, params)
-        bindView(view)
+        try {
+            wm.addView(view, params)
+            bindView(view)
+        } catch (e: SecurityException) {
+            // 悬浮窗权限未授权或已被关闭，安全退出服务
+            e.printStackTrace()
+            Toast.makeText(this, "请授予悬浮窗权限后再启动浮窗", Toast.LENGTH_LONG).show()
+            stopSelf()
+        } catch (e: WindowManager.BadTokenException) {
+            e.printStackTrace()
+            stopSelf()
+        }
     }
 
     private fun bindView(view: View) {
